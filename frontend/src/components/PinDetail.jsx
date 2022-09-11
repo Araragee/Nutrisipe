@@ -65,7 +65,7 @@ const PinDetail = ({ user }) => {
         <div className="flex xl:flex-row flex-col m-auto bg-white" style={{ maxWidth: '1500px', borderRadius: '32px' }}>
           <div className="flex justify-center items-center md:items-start flex-initial">
             <img
-              className="rounded-t-3xl rounded-b-lg"
+              className="rounded-t-3xl rounded-b-lg px-10 py-10"
               src={(pinDetail?.image && urlFor(pinDetail?.image).url())}
               alt="user-post"
             />
@@ -99,12 +99,11 @@ const PinDetail = ({ user }) => {
             <div className="max-h-370 overflow-y-auto">
               {pinDetail?.comments?.map((item) => (
                 <div className="flex gap-2 mt-5 items-center bg-white rounded-lg" key={item.comment}>
-                  
                   <img
                     src={item.postedBy?.image}
                     className="w-10 h-10 rounded-full cursor-pointer"
                     alt="user-profile"
-                    />
+                    /> 
                   <div className="flex flex-col">
                     <p className="font-bold">{item.postedBy?.userName}</p>
                     <p>{item.comment}</p>

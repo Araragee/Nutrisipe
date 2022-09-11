@@ -99,11 +99,12 @@ const PinDetail = ({ user }) => {
             <div className="max-h-370 overflow-y-auto">
               {pinDetail?.comments?.map((item) => (
                 <div className="flex gap-2 mt-5 items-center bg-white rounded-lg" key={item.comment}>
+                  
                   <img
                     src={item.postedBy?.image}
                     className="w-10 h-10 rounded-full cursor-pointer"
                     alt="user-profile"
-                  />
+                    />
                   <div className="flex flex-col">
                     <p className="font-bold">{item.postedBy?.userName}</p>
                     <p>{item.comment}</p>
@@ -127,7 +128,7 @@ const PinDetail = ({ user }) => {
                 className="bg-red-500 text-white rounded-full px-6 py-2 font-semibold text-base outline-none"
                 onClick={addComment}
               >
-                {addingComment ? 'Doing...' : 'Done'}
+                {addingComment ? 'Posting...' : 'Post'}
               </button>
             </div>
           </div>

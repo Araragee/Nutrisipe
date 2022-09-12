@@ -1,31 +1,13 @@
 {
-  "name": "nutrisipe",
-  "private": true,
+  "name": "backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "package.json",
-  "author": "Dave Gonzales <tekaruku26@gmail.com>",
-  "license": "UNLICENSED",
-  "scripts": {
-    "start": "sanity start",
-    "build": "sanity build"
-  },
-  "keywords": [
-    "sanity"
-  ],
+  "main": "index.js",
+  "license": "MIT",
   "dependencies": {
-    "@sanity/base": "^2.31.1",
-    "@sanity/core": "^2.31.1",
-    "@sanity/default-layout": "^2.31.1",
-    "@sanity/default-login": "^2.31.1",
-    "@sanity/desk-tool": "^2.31.1",
-    "@sanity/eslint-config-studio": "^2.0.0",
-    "@sanity/vision": "^2.31.1",
-    "eslint": "^8.6.0",
-    "prop-types": "^15.7",
-    "react": "^17.0",
-    "react-dom": "^17.0",
-    "styled-components": "^5.2.0"
-  },
-  "devDependencies": {}
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "mongoose": "^6.6.0",
+    "nodemon": "^2.0.19"
+  }
 }

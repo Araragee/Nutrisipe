@@ -5,6 +5,7 @@
     "@emotion/styled": "^11.10.4",
     "@mui/material": "^5.10.4",
     "@react-oauth/google": "^0.2.6",
-    "@userfront/core": "^0.4.4"
+    "@userfront/core": "^0.4.4",
+    "framer-motion": "^7.3.2"
   }
 }

@@ -1,11 +1,13 @@
 import React from 'react';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import shareVideo from '../assets/share.mp4';
 import logo from '../assets/logowhite.png';
 import { client } from '../client';
 import { style } from './style.css';
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -26,6 +28,7 @@ const Login = () => {
         });
     };
 
+  
 
     return (
         <div className="flex justify-start items-center flex-col h-screen">
@@ -37,9 +40,7 @@ const Login = () => {
                     controls={false}
                     muted
                     autoPlay
-                    className="w-full h-full object-cover"
-                />
-
+                    className="w-full h-full object-cover"/>
                 <div className="absolute flex flex-col justify-center items-center top-0 right-0 left-0 bottom-0 bg-blackOverlay">
                     <div className="p-5">
                         <img src={logo} width="130px" alt="logo" />
@@ -53,12 +54,11 @@ const Login = () => {
                        onFailure={responseGoogle}
                        cookiePolicy="single_host_origin"
                      />
-                   </GoogleOAuthProvider>
-
+                   </GoogleOAuthProvider>  
                     <button className='signup'>
                       Sign up using Email 
                     </button>
-                </div>
+              </div>
             </div>
         </div>
   );

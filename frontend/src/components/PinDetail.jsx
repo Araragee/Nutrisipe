@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { MdDownloadForOffline } from 'react-icons/md';
 import { Link, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-
+import CreatePin from './CreatePin';
 import { client, urlFor } from '../client';
 import MasonryLayout from './MasonryLayout';
 import { pinDetailMorePinQuery, pinDetailQuery } from '../utils/data';
 import Spinner from './Spinner';
+import { AiTwotoneDelete } from 'react-icons/ai';
+
+
 
 const PinDetail = ({ user }) => {
   const { pinId } = useParams();
@@ -59,6 +62,11 @@ const PinDetail = ({ user }) => {
     );
   }
 
+  const deleteComment = () =>
+  {
+    deleteComment()
+  }
+
   return (
     <>
       {pinDetail && (
@@ -76,10 +84,14 @@ const PinDetail = ({ user }) => {
                 <a
                   href={`${pinDetail.image.asset.url}?dl=`}
                   download
-                  className="bg-secondaryColor p-2 text-xl rounded-full flex items-center justify-center text-dark opacity-75 hover:opacity-100"
-                >
+                  className="bg-secondaryColor p-3 text-xl rounded-full flex items-center justify-center text-dark opacity-75 hover:opacity-100">
                   <MdDownloadForOffline />
                 </a>
+            <button
+             type="button"
+             className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none">
+             <AiTwotoneDelete />
+            </button>
               </div>
               <a href={pinDetail.destination} target="_blank" rel="noreferrer">
                 {pinDetail.destination?.slice(8)}
@@ -108,6 +120,13 @@ const PinDetail = ({ user }) => {
                     <p className="font-bold">{item.postedBy?.userName}</p>
                     <p>{item.comment}</p>
                   </div>
+                  <div>
+                  <button
+                  type="button"
+                  onClick={() => setComment(null)}
+                  className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none">
+                  <AiTwotoneDelete />
+                  </button></div>
                 </div>
               ))}
             </div>

@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import shareVideo from '../assets/share.mp4';
-import logo from '../assets/logowhite.png';
+import logo from '../assets/logo.png';
 import { client } from '../client';
 import { style } from './style.css';
+
 
 
 const Login = () => {
@@ -42,22 +43,25 @@ const Login = () => {
                     autoPlay
                     className="w-full h-full object-cover"/>
                 <div className="absolute flex flex-col justify-center items-center top-0 right-0 left-0 bottom-0 bg-blackOverlay">
-                    <div className="p-5">
+                    <div className="p-2">
                         <img src={logo} width="130px" alt="logo" />
                     </div>
 
+                    <button className="signup">
+                      Sign up using Email 
+                    </button>
+
                    <GoogleOAuthProvider
                      clientId={`${process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}`}
-                     className="shadow-2xl">
+                     className="shadow-2x1">
                      <GoogleLogin
                        onSuccess={responseGoogle}
                        onFailure={responseGoogle}
                        cookiePolicy="single_host_origin"
+                       
                      />
-                   </GoogleOAuthProvider>  
-                    <button className='signup'>
-                      Sign up using Email 
-                    </button>
+                   </GoogleOAuthProvider>
+                   
               </div>
             </div>
         </div>

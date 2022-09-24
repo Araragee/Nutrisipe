@@ -1,0 +1,46 @@
+
+.signup
+{
+    border-radius: 2rem;
+    background-color: #FF9F1C;
+    color: rgb(255, 255, 255);
+    margin: 10px 20px 10px 20px;
+    border-style: none;
+    padding: 5px 35px 5px 35px;
+    font-size: 1rem;
+}
+
+
+
+
+/*------------------------------------NAVBAR DESIGN---------------------------------*/
+
+.profile
+{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    margin: auto;
+    margin-top: 3px;
+}
+
+.addrecipe
+{
+    background-color: #42C9BD;
+    color: white;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display:flex;
+    justify-content: center; 
+    justify-items: center;
+    align-items: center;
+    margin-top: 3px;
+}
+/*------------------------------------cardstack---------------------------------*/
+.card
+{
+
+}

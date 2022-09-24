@@ -62,15 +62,21 @@ const PinDetail = ({ user }) => {
     );
   }
 
-  const deleteComment = () =>
-  {
-    deleteComment()
-  }
-
+  
+  const deleteComment = (id) => {
+    const ToRemove = [`save[userId=="${user.googleId}"]`] 
+    client 
+    .patch(id) 
+    .unset (ToRemove) 
+    .commit()
+     .then(() => { window.location.reload();
+     });
+   }
+ 
   return (
     <>
       {pinDetail && (
-        <div className="flex xl:flex-row flex-col m-auto bg-white" style={{ maxWidth: '1500px', borderRadius: '32px' }}>
+        <div className="flex xl:flex-row flex-col m-auto bg-white" style={{ maxWidth: '1500px', borderRadius: '32px'}}>
           <div className="flex justify-center items-center md:items-start flex-initial">
             <img
               className="rounded-t-3xl rounded-b-lg px-10 py-10"
@@ -90,6 +96,7 @@ const PinDetail = ({ user }) => {
             <button
              type="button"
              className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none">
+             
              <AiTwotoneDelete />
             </button>
               </div>
@@ -123,10 +130,10 @@ const PinDetail = ({ user }) => {
                   <div>
                   <button
                   type="button"
-                  onClick={() => setComment(null)}
                   className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none">
                   <AiTwotoneDelete />
-                  </button></div>
+                  </button>
+                  </div>
                 </div>
               ))}
             </div>

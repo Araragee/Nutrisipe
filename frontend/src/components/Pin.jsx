@@ -17,6 +17,16 @@ const Pin = ({ pin }) => {
 
   const user = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
 
+  const Unsave = (id) => {
+    const ToRemove = [`save[userId=="${user.googleId}"]`] 
+    client 
+    .patch(id) 
+    .unset (ToRemove) 
+    .commit()
+     .then(() => { window.location.reload();
+     });
+   }
+   
   const deletePin = (id) => {
     client
       .delete(id)
@@ -81,7 +91,7 @@ const Pin = ({ pin }) => {
               </div>
               {alreadySaved?.length !== 0 ? (
                 <button type="button" className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none">
-                  {pin?.save?.length}  Saved
+                  {pin?.save?.length} Saved
                 </button>
               ) : (
                 <button
@@ -111,15 +121,15 @@ const Pin = ({ pin }) => {
               ) : undefined}
               {
            postedBy?._id === user?.googleId && (
-           <button
-             type="button"
-             onClick={(e) => {
-               e.stopPropagation();
-               deletePin(_id);
-             }}
-             className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none"
-           >
-             <AiTwotoneDelete />
+            <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              deletePin(_id);
+            }}
+            className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none"
+          >
+            <AiTwotoneDelete />
            </button>
            )
         }

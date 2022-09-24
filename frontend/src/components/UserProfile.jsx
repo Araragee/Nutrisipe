@@ -11,6 +11,17 @@ import Spinner from './Spinner';
 const activeBtnStyles = 'bg-red-500 text-white font-bold p-2 rounded-full w-20 outline-none';
 const notActiveBtnStyles = 'bg-primary mr-4 text-black font-bold p-2 rounded-full w-20 outline-none';
 
+const Unsave = (id) => {
+   const ToRemove = [`save[userId=="${user.googleId}"]`] 
+   client 
+   .patch(id) 
+   .unset (ToRemove) 
+   .commit()
+    .then(() => { window.location.reload();
+    });
+  }
+
+
 const UserProfile = () => {
   const [user, setUser] = useState();
   const [pins, setPins] = useState();
@@ -25,11 +36,10 @@ const UserProfile = () => {
     client.fetch(query).then((data) => {
       setUser(data[0]);
     });
-  }, [userId]);
+    }, [userId]);
 
   const googleLogout = () => {
     localStorage.clear();
-
     navigate('/login');
   };
 
@@ -39,8 +49,9 @@ const UserProfile = () => {
 
       client.fetch(createdPinsQuery).then((data) => {
         setPins(data);
-      });
-    } else {
+      });}
+
+    else {
       const savedPinsQuery = userSavedPinsQuery(userId);
 
       client.fetch(savedPinsQuery).then((data) => {
@@ -92,15 +103,16 @@ const UserProfile = () => {
           >
             Created
           </button>
+          
           <button
             type="button"
             onClick={(e) => {
               setText(e.target.textContent);
-              setActiveBtn('saved');
-            }}
-            className={`${activeBtn === 'saved' ? activeBtnStyles : notActiveBtnStyles}`}
-          >
+              setActiveBtn('saved');}}
+            className={`${activeBtn === 'saved' ? activeBtnStyles : notActiveBtnStyles}`}>
+
             Saved
+
           </button>
         </div>
 

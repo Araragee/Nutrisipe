@@ -57,7 +57,7 @@ export const feedQuery = `*[_type == "pin"] | order(_createdAt desc) {
     }
   },
       _id,
-      procedure,
+      destination,
       postedBy->{
         _id,
         userName,
@@ -84,7 +84,7 @@ export const pinDetailQuery = (pinId) => {
     title, 
     about,
     category,
-    procedure,
+    destination,
     postedBy->{
       _id,
       userName,
@@ -118,7 +118,7 @@ export const pinDetailMorePinQuery = (pin) => {
       }
     },
     _id,
-    procedure,
+    destination,
     postedBy->{
       _id,
       userName,
@@ -144,7 +144,7 @@ export const searchQuery = (searchTerm) => {
           }
         },
             _id,
-            procedure,
+            destination,
             postedBy->{
               _id,
               userName,
@@ -175,7 +175,7 @@ export const userCreatedPinsQuery = (userId) => {
       }
     },
     _id,
-    procedure,
+    destination,
     postedBy->{
       _id,
       userName,
@@ -200,7 +200,7 @@ export const userSavedPinsQuery = (userId) => {
       }
     },
     _id,
-    procedure,
+    destination,
     postedBy->{
       _id,
       userName,
@@ -216,3 +216,35 @@ export const userSavedPinsQuery = (userId) => {
   }`;
   return query;
 };
+
+export const userfollowers = (userId) => {
+  const query = `*[_type == 'user' && _id == '${userId}'] | order(_createdAt desc) {
+    save[]{
+      postedBy->{
+        _id,
+        userName,
+        image
+      },
+    },
+  }`;
+  return query;
+};
+
+
+export const userfollowing = `*[_type == "user"] | order(_createdAt desc) {
+  image,
+  _id,
+  _type,
+  userName,
+      save[]{
+        _key,
+        postedBy->{
+          _id,
+          userName,
+          image
+        },
+      },
+} `;
+
+
+export const image = `*[_type == "user"] | or`

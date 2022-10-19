@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { MdDelete } from 'react-icons/md';
-
 import { categories } from '../utils/data';
 import { client } from '../client';
 import Spinner from './Spinner';
@@ -11,7 +10,7 @@ const CreatePin = ({ user }) => {
   const [title, setTitle] = useState('');
   const [about, setAbout] = useState('');
   const [loading, setLoading] = useState(false);
-  const [destination, setDestination] = useState();
+  const [procedure, setProcedure] = useState();
   const [fields, setFields] = useState();
   const [category, setCategory] = useState();
   const [imageAsset, setImageAsset] = useState();
@@ -41,12 +40,12 @@ const CreatePin = ({ user }) => {
   };
 
   const savePin = () => {
-    if (title && about && destination && imageAsset?._id && category) {
+    if (title && about && procedure && imageAsset?._id && category) {
       const doc = {
         _type: 'pin',
         title,
         about,
-        destination,
+        procedure,
         image: {
           _type: 'image',
           asset: {
@@ -133,13 +132,6 @@ const CreatePin = ({ user }) => {
         </div>
 
         <div className="flex flex-1 flex-col gap-6 lg:pl-5 mt-5 w-full">
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Add your title"
-            className="outline-none text-2xl sm:text-3xl font-bold border-b-2 border-gray-200 p-2"
-          />
           {user && (
             <div className="flex gap-2 mt-2 mb-2 items-center bg-white rounded-lg ">
               <img
@@ -150,24 +142,31 @@ const CreatePin = ({ user }) => {
               <p className="font-bold">{user.userName}</p>
             </div>
           )}
+           <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Give your recipe a title"
+            className="outline-none text-xl sm:text-3l font-bold border-b-2 border-gray-200 p-2"
+          />
           <input
             type="text"
             value={about}
             onChange={(e) => setAbout(e.target.value)}
-            placeholder="Tell everyone what your Pin is about"
+            placeholder="Recipe Description"
             className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
           />
-          <input
-            type="url"
-            vlaue={destination}
-            onChange={(e) => setDestination(e.target.value)}
-            placeholder="Add a destination link"
-            className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
+          <textarea
+            type="text"
+            value={procedure}
+            onChange={(e) => setProcedure(e.target.value)}
+            placeholder="Recipe procedures"
+            className="outline-none text-base sm:text-lg border-b-2 p-2"
           />
 
           <div className="flex flex-col">
             <div>
-              <p className="mb-2 font-semibold text:lg sm:text-xl">Choose Pin Category</p>
+              <p className="mb-2 font-semibold text:lg sm:text-xl">Choose Recipe Category</p>
               <select
                 onChange={(e) => {
                   setCategory(e.target.value);
@@ -186,9 +185,9 @@ const CreatePin = ({ user }) => {
               <button
                 type="button"
                 onClick={savePin}
-                className="bg-red-500 text-white font-bold p-2 rounded-full w-28 outline-none"
+                className="text-base text-white p-2 rounded-full outline-none" style={{width: "140px", backgroundColor: "#FF9F1C"}}
               >
-                Save Pin
+                Upload Recipe
               </button>
             </div>
           </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { MdDownloadForOffline } from 'react-icons/md';
-import { AiTwotoneDelete } from 'react-icons/ai';
+import { AiTwotoneDelete, AiOutlineHeart, AiFillHeart, AiOutlineStar } from 'react-icons/ai';
 import { BsFillArrowUpRightCircleFill } from 'react-icons/bs';
 
 import { client, urlFor } from '../client';
@@ -13,13 +13,13 @@ const Pin = ({ pin }) => {
 
   const navigate = useNavigate();
 
-  const { postedBy, image, _id, destination } = pin;
+  const { postedBy, image, _id } = pin;
 
   const user = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
 
-  const deletePin = (id) => {
+  const deletePin = (_id) => {
     client
-      .delete(id)
+      .delete(_id)
       .then(() => {
         window.location.reload();
       });
@@ -29,16 +29,16 @@ const Pin = ({ pin }) => {
 
   alreadySaved = alreadySaved?.length > 0 ? alreadySaved : [];
 
-  const savePin = (id) => {
-    if (alreadySaved?.length === 0) {
+  const savePin = (_id) => {
+    if (!alreadySaved) {
       setSavingPost(true);
 
       client
-        .patch(id)
+        .patch(_id)
         .setIfMissing({ save: [] })
         .insert('after', 'save[-1]', [{
           _key: uuidv4(),
-          userId: user?.googleId,
+          userId: user.googleId,
           postedBy: {
             _type: 'postedBy',
             _ref: user?.googleId,
@@ -50,6 +50,17 @@ const Pin = ({ pin }) => {
           setSavingPost(false);
         });
     }
+  };
+
+  const Unsave = (_id) => {
+    const ToRemove = [`save[userId=="${user.googleId}"]`]
+    client
+      .patch(_id)
+      .unset(ToRemove)
+      .commit()
+        .then(() => {
+          window.location.reload();
+    });
   };
 
   return (
@@ -79,36 +90,32 @@ const Pin = ({ pin }) => {
                 ><MdDownloadForOffline />
                 </a>
               </div>
-              {alreadySaved?.length !== 0 ? (
-                <button type="button" className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none">
-                  {pin?.save?.length}  Saved
-                </button>
-              ) : (
-                <button
+
+              {alreadySaved ? 
+              (
+                <button 
+                 type="button" 
+                 className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none'
                   onClick={(e) => {
+                    Unsave(_id);
                     e.stopPropagation();
-                    savePin(_id);
                   }}
-                  type="button"
-                  className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
                 >
-                  {pin?.save?.length}   {savingPost ? 'Saving' : 'Save'}
+                <AiOutlineStar />
+                </button>
+              ):(
+                <button 
+                  onClick={(e) => {
+                    savePin(_id);
+                    e.stopPropagation();
+                  }}
+                  type="button" className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none'>
+
+                   <AiFillHeart />
                 </button>
               )}
             </div>
             <div className=" flex justify-between items-center gap-2 w-full">
-              {destination?.slice(8).length > 0 ? (
-                <a
-                  href={destination}
-                  target="_blank"
-                  className="bg-white flex items-center gap-2 text-black font-bold p-2 pl-4 pr-4 rounded-full opacity-70 hover:opacity-100 hover:shadow-md"
-                  rel="noreferrer"
-                >
-                  {' '}
-                  <BsFillArrowUpRightCircleFill />
-                  {destination?.slice(8, 17)}...
-                </a>
-              ) : undefined}
               {
            postedBy?._id === user?.googleId && (
            <button

@@ -29,6 +29,7 @@ const Pin = ({ pin }) => {
 
   alreadySaved = alreadySaved?.length > 0 ? alreadySaved : [];
 
+  //save a post
   const savePin = (_id) => {
     if (!alreadySaved) {
       setSavingPost(true);
@@ -48,10 +49,12 @@ const Pin = ({ pin }) => {
         .then(() => {
           window.location.reload();
           setSavingPost(false);
+          
         });
     }
   };
 
+  //delete a post
   const Unsave = (_id) => {
     const ToRemove = [`save[userId=="${user.googleId}"]`]
     client
@@ -91,46 +94,25 @@ const Pin = ({ pin }) => {
                   <AiTwotoneDelete />
                 </button>
               </div>
-
-              {alreadySaved ? 
-              (
-                <button 
-                 type="button" 
-                 className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none'
+              {alreadySaved ? (
+                <button type="button" className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none'
                   onClick={(e) => {
-                    Unsave(_id);
                     e.stopPropagation();
+                    Unsave(_id);
                   }}
                 >
-                <AiOutlineStar />
+                  Unsave
                 </button>
-              ):(
+              ): (
                 <button 
                   onClick={(e) => {
-                    savePin(_id);
                     e.stopPropagation();
+                    savePin(_id);
                   }}
                   type="button" className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none'>
-
-                   <AiFillHeart />
+                  {save?.length || 0} {savingPost ? 'Saving' : 'Save'}
                 </button>
               )}
-            </div>
-            <div className=" flex justify-between items-center gap-2 w-full">
-              {
-           postedBy?._id === user?.googleId && (
-           <button
-             type="button"
-             onClick={(e) => {
-               e.stopPropagation();
-               deletePin(id);
-             }}
-             className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none"
-           >
-             <AiTwotoneDelete />
-           </button>
-           )
-        }
             </div>
           </div>
         )}

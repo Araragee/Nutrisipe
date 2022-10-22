@@ -17,9 +17,9 @@ const Pin = ({ pin }) => {
 
   const user = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
 
-  const deletePin = (_id) => {
+  const deletePin = (id) => {
     client
-      .delete(_id)
+      .delete(id)
       .then(() => {
         window.location.reload();
       });
@@ -80,15 +80,16 @@ const Pin = ({ pin }) => {
           >
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
-                <a
-                  href={`${image?.asset?.url}?dl=`}
-                  download
+                  <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
+                    deletePin(_id);
                   }}
-                  className="bg-white w-9 h-9 p-2 rounded-full flex items-center justify-center text-dark text-xl opacity-75 hover:opacity-100 hover:shadow-md outline-none"
-                ><MdDownloadForOffline />
-                </a>
+                  className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none"
+                >
+                  <AiTwotoneDelete />
+                </button>
               </div>
 
               {alreadySaved ? 
@@ -122,7 +123,7 @@ const Pin = ({ pin }) => {
              type="button"
              onClick={(e) => {
                e.stopPropagation();
-               deletePin(_id);
+               deletePin(id);
              }}
              className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none"
            >

@@ -29,6 +29,7 @@ const Sidebar = ({ closeToggle, user }) => {
             to="/"
             className={({ isActive }) => (isActive ? isActiveStyle : isNotActiveStyle)}
             onClick={handleCloseSidebar}
+            style={{color: "#008083"}}
           >
             <RiHomeFill />
             Home

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { AiTwotoneDelete, AiOutlineHeart, AiFillHeart, AiOutlineStar, AiFillDelete } from 'react-icons/ai';
-import { BsFillArrowUpRightCircleFill } from 'react-icons/bs';
-
+import { AiTwotoneDelete} from 'react-icons/ai';
 import { client, urlFor } from '../client';
 import { fetchUser } from '../utils/fetchUser';
 

@@ -83,7 +83,6 @@ const UserProfile = () => {
       client.fetch(createdPinsQuery).then((data) => {
         setPins(data);
       });
-
     } else {
       const savedPinsQuery = userSavedPinsQuery(userId);
 
@@ -143,7 +142,7 @@ const UserProfile = () => {
                  onClick={() => {
                    googleLogout();
                  }}>
-           <AiOutlineLogout color='red' fontsize={21} />
+           <AiOutlineLogout color='red' fontSize={21} />
          </button>
               )}
             </div>
@@ -202,21 +201,21 @@ const UserProfile = () => {
               }}
               className={`${activeBtn === 'created' ? activeBtnStyles : notActiveBtnStyles}`}
             >
-              Created 
-            </button>
-            <button 
-              type="button"
-              onClick={(e) => {
-                setText(e.target.textContent);
-                setActiveBtn('saved');
-              }}
-              className={`${activeBtn === 'saved' ? activeBtnStyles : notActiveBtnStyles}`}
-            >
-              Saved
-            </button>
-          </div>
+               Created
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              setText(e.target.textContent);
+              setActiveBtn('saved');
+            }}
+            className={`${activeBtn === 'saved' ? activeBtnStyles : notActiveBtnStyles}`}
+          >
+            Saved
+          </button>
+        </div>
 
-          <div className="px-2">
+        <div className="px-2">
           <MasonryLayout pins={pins} />
         </div>
 
@@ -225,7 +224,8 @@ const UserProfile = () => {
           No Pins Found!
         </div>
         )}
-      </div>
+          
+        </div>
       </div>
     </div>
   )

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { MdDownloadForOffline } from 'react-icons/md';
-import { Link, useParams } from 'react-router-dom';
+import { AiTwotoneDelete, AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-
 import { client, urlFor } from '../client';
 import MasonryLayout from './MasonryLayout';
 import { pinDetailMorePinQuery, pinDetailQuery } from '../utils/data';
 import Spinner from './Spinner';
+import {ingredient} from './CreatePin';
 
 const PinDetail = ({ user }) => {
   const { pinId } = useParams();
@@ -14,6 +14,7 @@ const PinDetail = ({ user }) => {
   const [pinDetail, setPinDetail] = useState();
   const [comment, setComment] = useState('');
   const [addingComment, setAddingComment] = useState(false);
+  const [ingredient, setIngredient] = useState();
 
   const fetchPinDetails = () => {
     const query = pinDetailQuery(pinId);
@@ -31,6 +32,8 @@ const PinDetail = ({ user }) => {
       });
     }
   };
+
+ 
 
   useEffect(() => {
     fetchPinDetails();
@@ -53,11 +56,13 @@ const PinDetail = ({ user }) => {
     }
   };
 
+
   if (!pinDetail) {
     return (
-      <Spinner message="Showing pin" />
+      <Spinner message="Loading Recipe" />
     );
   }
+  
 
   return (
     <>
@@ -70,23 +75,30 @@ const PinDetail = ({ user }) => {
               alt="user-post"
             />
           </div>
+
           <div className="w-full p-5 flex-1 xl:min-w-620">
-            <div className="flex items-center justify-between">
-              <div className="flex gap-2 items-center">
-                <a
-                  href={`${pinDetail.image.asset.url}?dl=`}
-                  download
-                  className="bg-secondaryColor p-2 text-xl rounded-full flex items-center justify-center text-dark opacity-75 hover:opacity-100"
-                >
-                  <MdDownloadForOffline />
-                </a>
-              </div>
-            </div>
+            
             <div>
+
               <h1 className="text-4xl font-bold break-words mt-3">
                 {pinDetail.title}
               </h1>
-              <p className="mt-3">{pinDetail.about}</p>
+
+              <p className="mt-3 py-4" >
+                {pinDetail.about}
+              </p>
+              <p className="mt-3 py-4" >
+                {pinDetail.procedure}
+              </p>
+
+
+              <div className="max-h-370 overflow-y-auto">
+             
+                    <p>{pinDetail.ingredient}</p>
+                </div>
+            
+
+
             </div>
             <Link to={`/user-profile/${pinDetail?.postedBy._id}`} className="flex gap-2 mt-5 items-center bg-white rounded-lg ">
               <img src={pinDetail?.postedBy.image} className="w-10 h-10 rounded-full" alt="user-profile" />

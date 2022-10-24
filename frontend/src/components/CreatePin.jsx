@@ -6,6 +6,7 @@ import { categories } from '../utils/data';
 import { client } from '../client';
 import Spinner from './Spinner';
 
+
 const CreatePin = ({ user }) => {
   const [title, setTitle] = useState('');
   const [about, setAbout] = useState('');
@@ -15,7 +16,23 @@ const CreatePin = ({ user }) => {
   const [category, setCategory] = useState();
   const [imageAsset, setImageAsset] = useState();
   const [wrongImageType, setWrongImageType] = useState(false);
+  const [ingredient,setIngredient]=useState(['']);
 
+
+  const handleIngredientAdd=()=>{
+      const abc=[...ingredient,[]]
+      setIngredient(abc)
+  }
+  const handleIngredientChange=(onChangeValue,i)=>{
+   const inputdata=[...ingredient]
+   inputdata[i]=onChangeValue.target.value;
+   setIngredient(inputdata)
+  }
+  const handleIngredientDelete=(i)=>{
+      const deleteIngredient=[...ingredient]
+      deleteIngredient.splice(i,1)
+      setIngredient(deleteIngredient)  
+  }
   const navigate = useNavigate();
 
   const uploadImage = (e) => {
@@ -40,11 +57,12 @@ const CreatePin = ({ user }) => {
   };
 
   const savePin = () => {
-    if (title && about && procedure && imageAsset?._id && category) {
+    if (title && about && procedure && imageAsset?._id && ingredient && category) {
       const doc = {
         _type: 'pin',
         title,
         about,
+        ingredient,
         procedure,
         image: {
           _type: 'image',
@@ -74,6 +92,8 @@ const CreatePin = ({ user }) => {
       );
     }
   };
+
+ 
   return (
     <div className="flex flex-col justify-center items-center mt-5 lg:h-4/5">
       {fields && (
@@ -131,9 +151,9 @@ const CreatePin = ({ user }) => {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col gap-6 lg:pl-5 mt-5 w-full">
+        <div className="flex flex-1 flex-col gap-1 lg:pl-5 mt-5 w-full">
           {user && (
-            <div className="flex gap-2 mt-2 mb-2 items-center bg-white rounded-lg ">
+            <div className="flex gap-2 mt-2 mb-2 ml-6 items-center bg-white rounded-lg ">
               <img
                 src={user.image}
                 className="w-10 h-10 rounded-full"
@@ -142,6 +162,7 @@ const CreatePin = ({ user }) => {
               <p className="font-bold">{user.userName}</p>
             </div>
           )}
+          <div className="flex flex-1 flex-col gap-6 lg:pl-5 mt-2 w-full">
            <input
             type="text"
             value={title}
@@ -149,22 +170,39 @@ const CreatePin = ({ user }) => {
             placeholder="Give your recipe a title"
             className="outline-none text-xl sm:text-3l font-bold border-b-2 border-gray-200 p-2"
           />
+          </div>
+
+          <div className="flex flex-1 flex-col gap-6 lg:pl-5 mt-5 w-full">
           <input
             type="text"
             value={about}
             onChange={(e) => setAbout(e.target.value)}
             placeholder="Recipe Description"
             className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
-          />
-          <textarea
+          /></div>
+
+       <label>Ingredients</label>
+       <>
+    <button onClick={()=>handleIngredientAdd()}>Add</button>
+        {ingredient.map((data,i)=>{
+            return(
+               <div>
+                    <input value={data} onChange={e=>handleIngredientChange(e,i)} />
+                    <button onClick={()=>handleIngredientDelete(i)}>x</button>
+               </div>
+            )
+        })}
+    </>
+          <div className="flex flex-1 flex-col gap-6 lg:pl-5 mt-5 w-full">
+          <input
             type="text"
             value={procedure}
             onChange={(e) => setProcedure(e.target.value)}
             placeholder="Recipe procedures"
             className="outline-none text-base sm:text-lg border-b-2 p-2"
-          />
+          /></div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-1 flex-col gap-6 lg:pl-5 mt-5 w-full">
             <div>
               <p className="mb-2 font-semibold text:lg sm:text-xl">Choose Recipe Category</p>
               <select

@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { MdDownloadForOffline } from 'react-icons/md';
-import { AiTwotoneDelete, AiOutlineHeart, AiFillHeart, AiOutlineStar } from 'react-icons/ai';
+import { AiTwotoneDelete, AiOutlineHeart, AiFillHeart, AiOutlineStar, AiFillDelete } from 'react-icons/ai';
 import { BsFillArrowUpRightCircleFill } from 'react-icons/bs';
-
 import { client, urlFor } from '../client';
+import { fetchUser } from '../utils/fetchUser';
 
 const Pin = ({ pin }) => {
   const [postHovered, setPostHovered] = useState(false);
   const [savingPost, setSavingPost] = useState(false);
 
   const navigate = useNavigate();
-
+  const { userId } = useParams();
+  const user = fetchUser();
   const { postedBy, image, _id } = pin;
 
-  const user = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
-
+  // delete a pin
   const deletePin = (id) => {
     client
       .delete(id)
@@ -54,7 +53,7 @@ const Pin = ({ pin }) => {
     }
   };
 
-  //delete a post
+  //unsave a post
   const Unsave = (_id) => {
     const ToRemove = [`save[userId=="${user.googleId}"]`]
     client
@@ -82,8 +81,8 @@ const Pin = ({ pin }) => {
             style={{ height: '100%' }}
           >
             <div className="flex items-center justify-between">
-              <div className="flex gap-2">
-                  <button
+            {user === pin.userId && (
+                 <button
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -93,7 +92,7 @@ const Pin = ({ pin }) => {
                 >
                   <AiTwotoneDelete />
                 </button>
-              </div>
+              )}
               {alreadySaved ? (
                 <button type="button" className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none'
                   onClick={(e) => {

@@ -223,7 +223,7 @@ const CreatePin = ({ user }) => {
               <button
                 type="button"
                 onClick={savePin}
-                className="text-base text-white p-2 rounded-full outline-none" style={{width: "140px", backgroundColor: "#FF9F1C"}}
+                className="text-base text-white p-2 rounded-full outline-none" style={{width: "140px", backgroundColor: "#008083"}}
               >
                 Upload Recipe
               </button>

@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { AiTwotoneDelete, AiOutlineHeart, AiFillHeart, AiOutlineStar, AiFillDelete } from 'react-icons/ai';
 import { BsFillArrowUpRightCircleFill } from 'react-icons/bs';
+
 import { client, urlFor } from '../client';
 import { fetchUser } from '../utils/fetchUser';
 
@@ -94,7 +95,7 @@ const Pin = ({ pin }) => {
                 </button>
               )}
               {alreadySaved ? (
-                <button type="button" className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none'
+                <button type="button" style={{backgroundColor: "#FD5901"}} className='opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none'
                   onClick={(e) => {
                     e.stopPropagation();
                     Unsave(_id);
@@ -108,7 +109,7 @@ const Pin = ({ pin }) => {
                     e.stopPropagation();
                     savePin(_id);
                   }}
-                  type="button" className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none'>
+                  type="button" style={{backgroundColor: "#FD5901"}}  className='opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none'>
                   {save?.length || 0} {savingPost ? 'Saving' : 'Save'}
                 </button>
               )}

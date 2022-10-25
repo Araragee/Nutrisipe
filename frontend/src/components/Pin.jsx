@@ -26,7 +26,6 @@ const Pin = ({ pin }) => {
 
   alreadySaved = alreadySaved?.length > 0 ? alreadySaved : [];
 
-  //save a post
   const savePin = (id) => {
     if (alreadySaved?.length === 0) {
       setSavingPost(true);
@@ -36,10 +35,10 @@ const Pin = ({ pin }) => {
         .setIfMissing({ save: [] })
         .insert('after', 'save[-1]', [{
           _key: uuidv4(),
-          userId: user?.googleId,
+          userId: user?.sub,
           postedBy: {
             _type: 'postedBy',
-            _ref: user?.googleId,
+            _ref: user?.sub,
           },
         }])
         .commit()

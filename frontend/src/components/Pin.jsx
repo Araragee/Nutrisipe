@@ -22,7 +22,7 @@ const Pin = ({ pin }) => {
   };
   const user = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
 
-  let alreadySaved = pin?.save?.filter((item) => item?.postedBy?._id === user?.googleId);
+  let alreadySaved = pin?.save?.filter((item) => item?.postedBy?._id === user?.sub);
 
   alreadySaved = alreadySaved?.length > 0 ? alreadySaved : [];
 
@@ -51,7 +51,7 @@ const Pin = ({ pin }) => {
 
   //unsave a post
   const Unsave = (id) => {
-    const ToRemove = [`save[userId=="${user.googleId}"]`]
+    const ToRemove = [`save[userId=="${user.sub}"]`]
     client
       .patch(id)
       .unset(ToRemove)
@@ -90,8 +90,14 @@ const Pin = ({ pin }) => {
                 </button>
               )}
                {alreadySaved?.length !== 0 ? (
-                <button type="button" className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none">
-                  {pin?.save?.length}  Saved
+                <button 
+                  type="button" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    Unsave(_id);
+                  }}
+                  className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none">
+                    Unsave
                 </button>
               ) : (
                 <button
@@ -102,7 +108,7 @@ const Pin = ({ pin }) => {
                   type="button"
                   className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
                 >
-                  {pin?.save?.length}   {savingPost ? 'Saving' : 'Save'}
+                  {savingPost ? 'Saving' : 'Save'}
                 </button>
               )}
             </div>

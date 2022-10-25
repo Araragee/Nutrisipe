@@ -3,18 +3,16 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { AiTwotoneDelete} from 'react-icons/ai';
 import { client, urlFor } from '../client';
-import { fetchUser } from '../utils/fetchUser';
+
 
 const Pin = ({ pin }) => {
   const [postHovered, setPostHovered] = useState(false);
   const [savingPost, setSavingPost] = useState(false);
-
   const navigate = useNavigate();
-  const { userId } = useParams();
-  const user = fetchUser();
   const { postedBy, image, _id } = pin;
 
-  // delete a pin
+
+  // delete a post
   const deletePin = (id) => {
     client
       .delete(id)
@@ -22,22 +20,23 @@ const Pin = ({ pin }) => {
         window.location.reload();
       });
   };
+  const user = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
 
   let alreadySaved = pin?.save?.filter((item) => item?.postedBy?._id === user?.googleId);
 
   alreadySaved = alreadySaved?.length > 0 ? alreadySaved : [];
 
   //save a post
-  const savePin = (_id) => {
-    if (!alreadySaved) {
+  const savePin = (id) => {
+    if (alreadySaved?.length === 0) {
       setSavingPost(true);
 
       client
-        .patch(_id)
+        .patch(id)
         .setIfMissing({ save: [] })
         .insert('after', 'save[-1]', [{
           _key: uuidv4(),
-          userId: user.googleId,
+          userId: user?.googleId,
           postedBy: {
             _type: 'postedBy',
             _ref: user?.googleId,
@@ -47,16 +46,15 @@ const Pin = ({ pin }) => {
         .then(() => {
           window.location.reload();
           setSavingPost(false);
-          
         });
     }
   };
 
   //unsave a post
-  const Unsave = (_id) => {
+  const Unsave = (id) => {
     const ToRemove = [`save[userId=="${user.googleId}"]`]
     client
-      .patch(_id)
+      .patch(id)
       .unset(ToRemove)
       .commit()
         .then(() => {
@@ -80,7 +78,7 @@ const Pin = ({ pin }) => {
             style={{ height: '100%' }}
           >
             <div className="flex items-center justify-between">
-            {user === pin.userId && (
+            {postedBy?._id === user.sub && (
                  <button
                   type="button"
                   onClick={(e) => {
@@ -92,23 +90,20 @@ const Pin = ({ pin }) => {
                   <AiTwotoneDelete />
                 </button>
               )}
-              {alreadySaved ? (
-                <button type="button" style={{backgroundColor: "#FD5901"}} className='opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none'
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    Unsave(_id);
-                  }}
-                >
-                  Unsave
+               {alreadySaved?.length !== 0 ? (
+                <button type="button" className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none">
+                  {pin?.save?.length}  Saved
                 </button>
-              ): (
-                <button 
+              ) : (
+                <button
                   onClick={(e) => {
                     e.stopPropagation();
                     savePin(_id);
                   }}
-                  type="button" style={{backgroundColor: "#FD5901"}}  className='opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none'>
-                  {save?.length || 0} {savingPost ? 'Saving' : 'Save'}
+                  type="button"
+                  className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
+                >
+                  {pin?.save?.length}   {savingPost ? 'Saving' : 'Save'}
                 </button>
               )}
             </div>

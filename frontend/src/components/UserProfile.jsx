@@ -7,7 +7,7 @@ import { userCreatedPinsQuery, userQuery, userSavedPinsQuery, userfollowers, use
 import { client } from '../client';
 import MasonryLayout from './MasonryLayout';
 import Spinner from './Spinner';
-import { fetchUser } from '../utils/fetchUser';
+
 
 const activeBtnStyles = 'bg-red-500 text-white font-bold p-2 rounded-full w-20 outline-none';
 const notActiveBtnStyles = 'bg-primary mr-4 text-black font-bold p-2 rounded-full w-20 outline-none';
@@ -23,8 +23,8 @@ const UserProfile = () => {
   const [activeBtn, setActiveBtn] = useState('created');
   const navigate = useNavigate();
   const { userId } = useParams();
-  const users = fetchUser();
   
+  const users = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
   const create = (id) => {
       client
       .patch(id)
@@ -192,17 +192,18 @@ const UserProfile = () => {
             </>
           )}
           
-          <div className='text-center mb-7'>
-            <button 
-              type="button"
-              onClick={(e) => {
-                setText(e.target.textContent);
-                setActiveBtn('created');
-              }}
-              className={`${activeBtn === 'created' ? activeBtnStyles : notActiveBtnStyles}`}
-            >
-               Created
+          <div className="text-center mb-7">
+          <button
+            type="button"
+            onClick={(e) => {
+              setText(e.target.textContent);
+              setActiveBtn('created');
+            }}
+            className={`${activeBtn === 'created' ? activeBtnStyles : notActiveBtnStyles}`}
+          >
+            Created
           </button>
+
           <button
             type="button"
             onClick={(e) => {
@@ -224,8 +225,7 @@ const UserProfile = () => {
           No Pins Found!
         </div>
         )}
-          
-        </div>
+      </div>
       </div>
     </div>
   )

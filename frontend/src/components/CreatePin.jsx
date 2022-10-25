@@ -16,7 +16,7 @@ const CreatePin = ({ user }) => {
   const [category, setCategory] = useState();
   const [imageAsset, setImageAsset] = useState();
   const [wrongImageType, setWrongImageType] = useState(false);
-  const [ingredient,setIngredient]=useState(['']);
+  const [ingredient, setIngredient] = useState(['']);
 
 
   const handleIngredientAdd=()=>{

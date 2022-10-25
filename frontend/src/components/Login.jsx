@@ -22,7 +22,8 @@ const Login = () => {
             _id: sub,
             _type: 'user',
             userName: name,
-            image: picture
+            image: picture,
+            id: sub,
         }
         
         client.createIfNotExists(doc).then(()=>{

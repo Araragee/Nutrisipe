@@ -7,6 +7,7 @@ import { client } from '../client';
 import Spinner from './Spinner';
 
 
+
 const CreatePin = ({ user }) => {
   const [title, setTitle] = useState('');
   const [about, setAbout] = useState('');

@@ -1,3 +1,6 @@
+//how to fet queries 
+//categories
+
 export const categories = [
   {
     name: 'hotdogs',
@@ -58,6 +61,7 @@ export const feedQuery = `*[_type == "pin"] | order(_createdAt desc) {
   },
       _id,
       procedure,
+      ingredient[],
       postedBy->{
         _id,
         userName,
@@ -83,7 +87,7 @@ export const pinDetailQuery = (pinId) => {
     _id,
     title, 
     about,
-    ingredient,
+    ingredient[],
     category,
     procedure,
     postedBy->{
@@ -149,6 +153,7 @@ export const searchQuery = (searchTerm) => {
             postedBy->{
               _id,
               userName,
+              ingredient[],
               image
             },
             save[]{
@@ -177,6 +182,7 @@ export const userCreatedPinsQuery = (userId) => {
     },
     _id,
     procedure,
+    ingredient[],
     postedBy->{
       _id,
       userName,
@@ -205,6 +211,7 @@ export const userSavedPinsQuery = (userId) => {
     postedBy->{
       _id,
       userName,
+      ingredient[],
       image
     },
     save[]{

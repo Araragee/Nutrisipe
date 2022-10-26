@@ -67,8 +67,8 @@ const Pin = ({ pin }) => {
         onMouseEnter={() => setPostHovered(true)}
         onMouseLeave={() => setPostHovered(false)}
         onClick={() => navigate(`/pin-detail/${_id}`)}
-        className=" relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out"
-      >
+        className=" relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out">
+          
         {image && (
         <img className="rounded-lg w-full " src={(urlFor(image).width(250).url())} alt="user-post" />)}
         {postHovered && (
@@ -77,18 +77,7 @@ const Pin = ({ pin }) => {
             style={{ height: '100%' }}
           >
             <div className="flex items-center justify-between">
-            {postedBy?._id === user.sub && (
-                 <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    deletePin(_id);
-                  }}
-                  className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none"
-                >
-                  <AiTwotoneDelete />
-                </button>
-              )}
+           
                {alreadySaved?.length !== 0 ? (
                 <button 
                   type="button" 
@@ -109,6 +98,19 @@ const Pin = ({ pin }) => {
                   className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
                 >
                   {savingPost ? 'Saving' : 'Save'}
+                </button>
+              )}
+
+                {postedBy?._id === user.sub && (
+                 <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deletePin(_id);
+                  }}
+                  className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none"
+                >
+                  <AiTwotoneDelete />
                 </button>
               )}
             </div>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import MasonryLayout from './MasonryLayout';
 import { client } from '../client';
 import { feedQuery, searchQuery } from '../utils/data';
@@ -17,7 +16,8 @@ const Search = ({ searchTerm }) => {
         setPins(data);
         setLoading(false);
       });
-    } else {
+    } 
+    else {
       client.fetch(feedQuery).then((data) => {
         setPins(data);
         setLoading(false);

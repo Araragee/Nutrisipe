@@ -6,7 +6,8 @@ import { client, urlFor } from '../client';
 import MasonryLayout from './MasonryLayout';
 import { pinDetailMorePinQuery, pinDetailQuery } from '../utils/data';
 import Spinner from './Spinner';
-import {ingredient} from './CreatePin';
+import { savePin, user, pin,  } from './Pin';
+
 
 const PinDetail = ({ user }) => {
   const { pinId } = useParams();
@@ -33,7 +34,21 @@ const PinDetail = ({ user }) => {
     }
   };
 
- 
+  const deleteComment = async (key) => {
+    try {
+      client.patch(pinId)
+      .unset([`comments[_key=="${key}"]`])
+      .commit()
+      .then(() => {
+        fetchPinDetails();
+        setComment("");
+        setAddingComment(false);
+      });
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     fetchPinDetails();
@@ -45,7 +60,7 @@ const PinDetail = ({ user }) => {
 
       client
         .patch(pinId)
-        .setIfMissing({ comments: [] })
+        .setIfMissing({ comment: [] })
         .insert('after', 'comments[-1]', [{ comment, _key: uuidv4(), postedBy: { _type: 'postedBy', _ref: user._id } }])
         .commit()
         .then(() => {
@@ -67,45 +82,49 @@ const PinDetail = ({ user }) => {
   return (
     <>
       {pinDetail && (
-        <div className="flex xl:flex-row flex-col m-auto bg-white" style={{ maxWidth: '1500px', borderRadius: '32px' }}>
+        <div className="flex xl:flex-row flex-col m-auto bg-white" style={{ maxWidth: '1500px', borderRadius: '32px'}}>
           <div className="flex justify-center items-center md:items-start flex-initial">
             <img
               className="rounded-t-3xl rounded-b-lg px-10 py-10"
               src={(pinDetail?.image && urlFor(pinDetail?.image).url())}
               alt="user-post"
             />
+            
           </div>
 
           <div className="w-full p-5 flex-1 xl:min-w-620">
             
             <div>
-
+              <div>
               <h1 className="text-4xl font-bold break-words mt-3">
                 {pinDetail.title}
               </h1>
-
+                </div>
               <p className="mt-3 py-4" >
                 {pinDetail.about}
               </p>
+
               <p className="mt-3 py-4" >
                 {pinDetail.procedure}
               </p>
 
-
-              <div className="max-h-370 overflow-y-auto">
-             
-                    <p>{pinDetail.ingredient}</p>
-                </div>
-            
-
+                <p style={{marginBottom:'15px'}}> Ingredients: </p>
+              {pinDetail.ingredient.map((item) => (
+                <div style={{width:'auto', height:'auto', marginLeft: '10px', position:'relative' }}>
+                  <li>{item}</li>
+                  </div>
+              ))}  
 
             </div>
+
+
             <Link to={`/user-profile/${pinDetail?.postedBy._id}`} className="flex gap-2 mt-5 items-center bg-white rounded-lg ">
               <img src={pinDetail?.postedBy.image} className="w-10 h-10 rounded-full" alt="user-profile" />
               <p className="font-bold">{pinDetail?.postedBy.userName}</p>
             </Link>
             <h2 className="mt-5 text-2xl">Comments</h2>
             <div className="max-h-370 overflow-y-auto">
+              
               {pinDetail?.comments?.map((item) => (
                 <div className="flex gap-2 mt-5 items-center bg-white rounded-lg" key={item.comment}>
                   <img
@@ -113,9 +132,18 @@ const PinDetail = ({ user }) => {
                     className="w-10 h-10 rounded-full cursor-pointer"
                     alt="user-profile"
                     /> 
-                  <div className="flex flex-col">
-                    <p className="font-bold">{item.postedBy?.userName}</p>
-                    <p>{item.comment}</p>
+                  <div className="flex flex-col"> 
+                    <p className="font-bold">{item.postedBy?.userName} </p>
+                    <p>{item.comment} {item.postedBy?._id === user._id && (
+                    <button 
+                    type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteComment(key);
+                  }}>
+                      <AiTwotoneDelete />
+                    </button>)}</p>
+                    
                   </div>
                 </div>
               ))}
@@ -141,6 +169,8 @@ const PinDetail = ({ user }) => {
             </div>
           </div>
         </div>
+
+  
       )}
       {pins?.length > 0 && (
         <h2 className="text-center font-bold text-2xl mt-8 mb-4">
